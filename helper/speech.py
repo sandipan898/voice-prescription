@@ -14,29 +14,35 @@ def save_information():
 def speech_rec():
     r = sr.Recognizer()
     text = ""
-    count = 1
+    count = 0
     medicines = {}
 
     with sr.Microphone() as source:
         
-        while(not (text.lower() == 'exit')):
+        while(True):
             medicine_dict = {}
-            print("Medicine-%d Information", count)            
             count += 1
+
+            print("Medicine-" + str(count) + " Information")            
         
             print("Adjusting noise ")
             r.adjust_for_ambient_noise(source, duration=1)
+            
             print("Medicine Name:")            
+            speaker.say("Medicine name")
+            
             recorded_audio = r.listen(source, timeout=6)
             print("Done")
         
             try:
-                speaker.say("Medicine name")
-                text_name = r.recognize_google(
+                text = r.recognize_google(
                         recorded_audio, 
                         language="en-US"
                     )
-                medicine_dict["Medicine Name"] = text_name
+                if((text.lower() == 'exit')):
+                    break
+
+                medicine_dict["Medicine Name"] = text
                 print("Decoded Text : {}".format(text))   
                 
                 # speaker.say(text)
@@ -50,18 +56,20 @@ def speech_rec():
 
             print("Adjusting noise ")
             r.adjust_for_ambient_noise(source, duration=1)
-            print("Medicine Instruction:")            
+            print("Medicine Instruction:")  
+            speaker.say("Medicine Instruction")
+
             recorded_audio = r.listen(source, timeout=6)
             print("Done")
         
             try:
-                speaker.say("Medicine Instruction")
-                text_instruction = r.recognize_google(
+                # speaker.say("Medicine Instruction")
+                text = r.recognize_google(
                         recorded_audio, 
                         language="en-US"
                     )
-                medicine_dict["Medicine Instruction"] = text_instruction
-                print("Decoded Text : {}".format(text_instruction))   
+                medicine_dict["Medicine Instruction"] = text
+                print("Decoded Text : {}".format(text))   
                 
                 # speaker.say(text)
                 # return text
