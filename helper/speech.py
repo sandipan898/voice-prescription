@@ -44,18 +44,14 @@ def speech_rec():
 
                 medicine_dict["Medicine Name"] = text
                 print("Decoded Text : {}".format(text))   
-                
-                # speaker.say(text)
-                # return text
 
             except Exception as e:
                 print(e)
-                # return "Sorry, I did not get that"
-
 
 
             print("Adjusting noise ")
             r.adjust_for_ambient_noise(source, duration=1)
+            
             print("Medicine Instruction:")  
             speaker.say("Medicine Instruction")
 
@@ -63,7 +59,6 @@ def speech_rec():
             print("Done")
         
             try:
-                # speaker.say("Medicine Instruction")
                 text = r.recognize_google(
                         recorded_audio, 
                         language="en-US"
@@ -71,16 +66,12 @@ def speech_rec():
                 medicine_dict["Medicine Instruction"] = text
                 print("Decoded Text : {}".format(text))   
                 
-                # speaker.say(text)
-                # return text
-
             except Exception as e:
                 print(e)
-                # return "Sorry, I did not get that"
 
-            medicines["medicine" + str(count)] = medicine_dict
+            medicines["Medicine No. " + str(count)] = medicine_dict
     
     return medicines
 
 
-print(speech_rec())
+# print(speech_rec())

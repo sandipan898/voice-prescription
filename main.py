@@ -3,8 +3,9 @@ from helper.speech import speech_rec
 
 
 def start_app():
-    said = speech_rec()
-    save_pdf(said)
+    medicines = speech_rec()
+    print(medicines)
+    save_pdf(medicines)
 
 if __name__ == '__main__':
     start_app()
