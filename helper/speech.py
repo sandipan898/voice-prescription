@@ -1,6 +1,7 @@
 import sys
 import speech_recognition as sr
 
+
 def speech_rec_for_linux():
     import espeak
     espeak.init()
@@ -17,7 +18,7 @@ def speech_rec_for_linux():
             count += 1
 
             print("Medicine-" + str(count) + " Information")            
-        
+
             print("Adjusting noise ")
             r.adjust_for_ambient_noise(source, duration=1)
             
@@ -32,10 +33,11 @@ def speech_rec_for_linux():
                         recorded_audio, 
                         language="en-US"
                     )
-                if((text.lower() == 'exit' or text.lower() == 'quit' or text.lower() == 'done')):
+                if 'exit' in str(text).lower() :
+                    print("Thanks for using our service!")
                     break
 
-                medicine_dict["Medicine Name"] = text
+                medicine_dict["Medicine Name"] = str(text)
                 print("Decoded Text : {}".format(text))   
 
             except Exception as e:
@@ -56,7 +58,7 @@ def speech_rec_for_linux():
                         recorded_audio, 
                         language="en-US"
                     )
-                medicine_dict["Medicine Instruction"] = text
+                medicine_dict["Medicine Instruction"] = str(text)
                 print("Decoded Text : {}".format(text))   
                 
             except Exception as e:
@@ -70,10 +72,10 @@ def speech_rec_for_linux():
 
 
 def speech_rec_for_windows():
-    # import pyttsx3
-    # speaker = pyttsx3.init()
-    from win32com.client import Dispatch
-    speak = Dispatch("SAPI.SpVoice").Speak
+    import pyttsx3
+    speaker = pyttsx3.init()
+    # from win32com.client import Dispatch
+    # speak = Dispatch("SAPI.SpVoice").Speak
     
     r = sr.Recognizer()
     text = ""
@@ -91,7 +93,8 @@ def speech_rec_for_windows():
             r.adjust_for_ambient_noise(source, duration=1)
             
             print("Medicine Name:")            
-            speak("Medicine name")
+            speaker.say("Medicine name")
+            speaker.runAndWait()
             
             recorded_audio = r.listen(source, timeout=6)
             print("Done")
@@ -101,22 +104,22 @@ def speech_rec_for_windows():
                         recorded_audio, 
                         language="en-US"
                     )
-                if 'exit' in text.lower() :
+                if 'exit' in str(text).lower() :
                     print("Thanks for using our service!")
                     break
 
-                medicine_dict["Medicine Name"] = text
+                medicine_dict["Medicine Name"] = str(text)
                 print("Decoded Text : {}".format(text))   
 
             except Exception as e:
-                print(e)
-
+                print("Exception", e)
 
             print("Adjusting noise ")
             r.adjust_for_ambient_noise(source, duration=1)
             
             print("Medicine Instruction:")  
-            speak("Medicine Instruction")
+            speaker.say("Medicine Instruction")
+             .runAndWait()
 
             recorded_audio = r.listen(source, timeout=6)
             print("Done")
@@ -126,11 +129,11 @@ def speech_rec_for_windows():
                         recorded_audio, 
                         language="en-US"
                     )
-                medicine_dict["Medicine Instruction"] = text
+                medicine_dict["Medicine Instruction"] = str(text)
                 print("Decoded Text : {}".format(text))   
                 
             except Exception as e:
-                print(e)
+                print("Exception", e)
 
             medicines["Medicine No. " + str(count)] = medicine_dict
     
