@@ -1,9 +1,15 @@
+import sys
 from helper.pdf_op import  save_pdf
-from helper.speech import speech_rec
+from helper.speech import speech_rec_for_windows, speech_rec_for_linux
 
 
 def start_app():
-    medicines = speech_rec()
+    if sys.platform.startswith('linux'):
+        medicines = speech_rec_for_linux()
+        
+    elif sys.platform.startswith('win32'):
+        medicines = speech_rec_for_windows()
+
     print(medicines)
     save_pdf(medicines)
 
